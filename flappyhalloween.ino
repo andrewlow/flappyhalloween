@@ -10,9 +10,7 @@
  *******************************************************************************/
  
 
-#include <SPI.h>
-#include "Arduboy.h"
-#include <EEPROM.h>
+#include <Arduboy.h>
 #include "bitmaps.h"
 #include "flight.h"
 
@@ -53,7 +51,7 @@ void intro()
 {
   for(int i = -8; i < 28; i = i + 2)
   {
-    arduboy.clearDisplay();
+    arduboy.clear();
     arduboy.setCursor(46, i);
     arduboy.print("ARDUBOY");
     arduboy.display();
@@ -74,11 +72,11 @@ void intro()
 
 void setup()
 {
-  arduboy.start();
+  arduboy.begin();
   setSpeed();
   intro();
   // put up the title screen until A is pressed
-  arduboy.clearDisplay(); 
+  arduboy.clear();
   arduboy.drawSlowXYBitmap(0, 0, title, 128, 64, 1);
   arduboy.display();
 }
@@ -93,18 +91,18 @@ void loop()
     if(arduboy.pressed(A_BUTTON)) {
       start = true;
       frame = 0;
-      arduboy.clearDisplay(); 
+      arduboy.clear();
       arduboy.initRandomSeed();
     }
   }
 
   if(start) {
 
-    arduboy.clearDisplay(); 
+    arduboy.clear();
     frame++;      // increments forever (looping)
 
     if(!owlActive) {
-      flightOffset++;  
+      flightOffset++;
       if(flightOffset == 462) {  // see flight.cpp
         flightOffset = 0;
       }
@@ -150,7 +148,7 @@ void loop()
       }
       if (i!= NUMBUGS){ // we found a -1
         bugsX[i] = 128;
-        bugsY[i] = random(1,61);        
+        bugsY[i] = random(1,61);
       }
     }
     if(0 == (frame%3)) { // every couple of frames`
@@ -267,7 +265,7 @@ void loop()
       owlY = 128; // ensure it can't collide with bat
       for (i=0; i<NUMBUGS; i++) {
         bugsX[i] =  -1;
-      } 
+      }
       setSpeed();
     }
   }
@@ -279,17 +277,4 @@ void setSpeed() {
   int rate = 60 + (score / 2) + owlCount;
   arduboy.setFrameRate(rate > 255 ? 255 : rate);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
