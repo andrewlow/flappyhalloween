@@ -276,7 +276,7 @@ void loop()
 
 // Set the speed of the game
 void setSpeed() {
-  int rate = 60 + (score * 2) + (owlCount * 3);
+  int rate = 60 + (score / 2) + owlCount;
   arduboy.setFrameRate(rate > 255 ? 255 : rate);
 }
 
