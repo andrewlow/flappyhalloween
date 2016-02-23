@@ -31,6 +31,7 @@ int bugFrame = 0;
 // owls can move from 'off screen' to 'off screen'
 // -16 to 128 = 144 unique positions
 bool owlActive = false;  // is there an owl in flight
+int owlCount = 0;    // number of owls created
 int owlX = 128;
 int owlY = 0;
 const int owlRate = 30;
@@ -72,7 +73,7 @@ void intro()
 void setup()
 {
   arduboy.begin();
-  arduboy.setFrameRate(60);
+  setSpeed();
   intro();
   // put up the title screen until A is pressed
   arduboy.clear();
@@ -114,6 +115,8 @@ void loop()
     if( !owlActive ) {
       if(2 > random(1,300)) { // 2 in 300 chances of an owl becoming active
         owlActive = true;
+        owlCount++;
+        setSpeed();
         owlX = 128;
       }
     }
@@ -193,6 +196,7 @@ void loop()
               bugsX[i] = -1;
               arduboy.tunes.tone(2000, 20);
               score++;
+              setSpeed();
             }
           }
         } 
@@ -257,12 +261,20 @@ void loop()
       // clear out variables to start again
       score = 0;
       owlActive = false;
+      owlCount = 0;
       owlY = 128; // ensure it can't collide with bat
       for (i=0; i<NUMBUGS; i++) {
         bugsX[i] =  -1;
       }
+      setSpeed();
     }
   }
 
+}
+
+// Set the speed of the game
+void setSpeed() {
+  int rate = 60 + (score / 2) + owlCount;
+  arduboy.setFrameRate(rate > 255 ? 255 : rate);
 }
 
